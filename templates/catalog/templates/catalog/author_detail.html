@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+   <h1>Author: {{ author.first_name }} {{ author.last_name }} </h1>
+
+   <p>{{ author.date_of_birth }}</p>
+
+   <div style="margin-left:20px;margin-top:20px">
+       <h3>Books</h3>
+       {% for bookauthor in author.book_set.all %}
+
+       <a href="{{ bookauthor.get_absolute_url }}">{{ bookauthor.title }}</a> 
+       <p>{{ bookauthor.summary }}</p>
+       {% endfor %}
+
+            {% if user.is_staff %}
+                {% if perms.catalog.can_mark_returned %}
+                   <li><a href="{% url 'catalog:author_create' %}">Create a new Author</a></li>
+                   <li><a href="{% url 'catalog:author_update' author.id %}">Update this Author</a></li>
+                   <li><a href="{% url 'catalog:author_delete' author.id %}">Delete this Author</a></li>
+                {% endif %}
+            {% endif %}
+
+   </div>
+{% endblock %}
+
